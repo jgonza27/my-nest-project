@@ -1,0 +1,17 @@
+services:
+  node:
+    image: node
+    container_name: node
+    working_dir: /app
+    volumes:
+      - .:/app
+    tty: true
+    command: bash
+    ports:
+      - 3000:3000
+      - 4200:4200
+    networks:
+      - HLC
+networks:
+  HLC:
+    name: HLC
