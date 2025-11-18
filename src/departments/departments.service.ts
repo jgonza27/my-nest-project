@@ -4,29 +4,47 @@ import { Departments } from './departments.interface';
 @Injectable()
 export class DepartmentsService {
     // Atributos
-    private departaments: any = [];
+    private departments: any = [];
 
     // Métodos
     getAllDepartments() {
-        // return { 'respuesta': 'Listado con todos los departamentos' };
-        return { 'respuesta': this.departaments };
+        return this.departments;
     }
 
     getOneDepartment(id: string) {
-        const departmentFound = this.departaments.find(
-            (departments) => departments.id === id,
-        );
-
-        if (!departmentFound) {
-            return { 'respuesta': `Departamento con id ${id} no encontrado` };
-        }
-
-        // return { 'respuesta': `Departamento con id ${id}` };
-        return { 'respuesta': departmentFound };
+        return this.departments.find((department) => department.id === id);
     }
 
     createOneDepartment(department: Departments) {
-        this.departaments.push(department);
-        return { 'respuesta': 'Departamento creado con exito' };
+        this.departments.push(department);
+        return { respuesta: 'Departamento creado con éxito' };
+    }
+
+    updateOneDepartment(id: string, department: Departments) {
+        const departmentFound = this.departments.find((d) => d.id === id);
+        if (!departmentFound) {
+            return { respuesta: `Departamento con id ${id} no encontrado` };
+        }
+
+        const posicion: number = parseInt(
+            this.departments.findIndex((d) => d.id === id).toString()
+        );
+        this.departments.splice(posicion, 1, department);
+
+        return { respuesta: 'Departamento actualizado con éxito' };
+    }
+
+    deleteOneDepartment(id: string) {
+        const departmentFound = this.departments.find((d) => d.id === id);
+        if (!departmentFound) {
+            return { respuesta: `Departamento con id ${id} no encontrado` };
+        }
+
+        const posicion: number = parseInt(
+            this.departments.findIndex((d) => d.id === id).toString()
+        );
+        this.departments.splice(posicion, 1);
+
+        return { respuesta: 'Departamento borrado con éxito' };
     }
 }

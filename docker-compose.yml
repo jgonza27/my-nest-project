@@ -1,17 +1,28 @@
 services:
+  # NodeJS Service
   node:
-    image: node
-    container_name: node
-    working_dir: /app
-    volumes:
-      - .:/app
-    tty: true
-    command: bash
+    image: node:latest
     ports:
       - 3000:3000
-      - 4200:4200
-    networks:
-      - HLC
-networks:
-  HLC:
-    name: HLC
+    volumes:
+      - .:/app
+    tty: true       
+  # MariaDB Service
+  mariadb:
+    image: mariadb:10.11
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+    volumes:
+      - mysqldata:/var/lib/mysql
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - 8080:80
+    environment:
+      PMA_HOST: mariadb
+    depends_on:
+      - mariadb
+# Volumes
+volumes:
+  mysqldata:
